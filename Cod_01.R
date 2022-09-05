@@ -75,7 +75,7 @@ df = select(df, c( "y_total_m" , "clase",
 ################################################################################
 #### Manejo de datos Limpieza
 df <- na.omit(df) ## elimina datos nulos de la base de d
-
+### censurar los datos
 y_total_m <- df$y_total_m
 quantile( y_total_m, prob = c( .05, .1, .15, .20 , .25 , .30, .35, .40 , .50 , .55 , .60 , .65 , .7 , .75 , .80 , .85 , .90 , .95))
 rm(y_total_m)
@@ -113,3 +113,16 @@ write.csv2(regSalud, file = "regSalud.csv")
 write.csv2(tipo_regimen, file = "tipo_regimen.csv")
 write.csv2(segundo_trabajo, file = "segundo_trabajo.csv")
 write.csv2(Tipo_ocupacion, file = "Tipo_ocupacion.csv")
+
+
+
+##### 2 perfil ganancia 
+
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+
+df2 <- mutate(df, age2=age*age) 
+regresion <- lm(y_total_m ~ age + age2 , data = df2)
+salida <- summary(regresion)
+tab_model(regresion)
