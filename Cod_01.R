@@ -177,3 +177,4 @@ text(rbind(c(round(-beta[2]/(2*beta[3])+(1.96*sqrt(varianza)), digits = 2), min(
 CI<-matrix(c(-beta[2]/(2*beta[3])-(1.96*sqrt(varianza)), -beta[2]/(2*beta[3])+(1.96*sqrt(varianza))), nrow = 1, ncol = 2)
 colnames(CI)<-c("Lower Bound", "Upper_Bound")
 CI
+###
