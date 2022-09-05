@@ -370,6 +370,25 @@ legend(30, 1200000, legend = c("Hombre", "Mujer"), fill=c("black", "red"), col =
 # Punto_3 - c 
 #############################################
 
+#############################################
+
+#Regresion larga con controles
+df3c <- mutate(df3, second_job=p7040-1)
+long_mod <- lm(ln_Y_total_m ~ age + age2 + female + hoursWorkUsual + second_job + cuentaPropia + microEmpresa + factor(relab), data = df3c)
+stargazer(long_mod, type = "text")
+
+#FWL
+db <- mutate(df3c, res_y_nui=lm(ln_Y_total_m~age + age2 + hoursWorkUsual + second_job + cuentaPropia + microEmpresa + factor(relab), data=df3c)$residuals, 
+             res_female_nui=lm(female~age + age2 + hoursWorkUsual + second_job + cuentaPropia + microEmpresa + factor(relab), data=df3c)$residuals)
+FWL <- lm(res_y_nui~res_female_nui, data=db)
+stargazer(long_mod, FWL, type="text")
+
+#FWL con bootstrap
+set.seed(112)
+beta.FWL<-function(data,index){
+  coef(lm(res_y_nui~res_female_nui, data=db, subset = index))
+}
+boot(db, beta.FWL, R = 1000)
 
 
 ################################################################################
